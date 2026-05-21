@@ -4,35 +4,35 @@ import os
 from dotenv import load_dotenv
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
+# ENV LOAD
 load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 
+# BOT
 bot = telebot.TeleBot(TOKEN)
 
 # MENU
 markup = ReplyKeyboardMarkup(resize_keyboard=True)
 
-markup.add(
-    KeyboardButton("👨‍💻 About Me"),
-    KeyboardButton("🛠 Tech Stack")
-)
+btn1 = KeyboardButton("👨‍💻 About Me")
+btn2 = KeyboardButton("🛠 Tech Stack")
+btn3 = KeyboardButton("💼 Projects")
+btn4 = KeyboardButton("📞 Contact")
 
-markup.add(
-    KeyboardButton("💼 Projects"),
-    KeyboardButton("📞 Contact")
-)
+markup.row(btn1, btn2)
+markup.row(btn3, btn4)
 
 # START
 @bot.message_handler(commands=['start'])
 def start(message):
 
-    text = f"""
+    text = """
 👋 Salom! Men Komilov G'ulomjonman
 
 ⚡ Python Developer | Telegram Bot Developer
 
-Quyidagi bo'limlardan birini tanlang:
+Quyidagi bo'limlardan birini tanlang 👇
 """
 
     bot.send_message(
@@ -41,14 +41,11 @@ Quyidagi bo'limlardan birini tanlang:
         reply_markup=markup
     )
 
-# BUTTONS
-@bot.message_handler(func=lambda message: True)
-def portfolio(message):
+# ABOUT
+@bot.message_handler(func=lambda message: message.text == "👨‍💻 About Me")
+def about(message):
 
-    # ABOUT
-    if message.text == "👨‍💻 About Me":
-
-        text = """
+    text = """
 👨‍💻 About Me
 ━━━━━━━━━━━━━━━━
 
@@ -56,52 +53,54 @@ def portfolio(message):
 
 ⚡ Python, Telegram Bot API va automation bo‘yicha tajribam bor
 
-🌱 Hozirda AI, Web App va backend yo‘nalishlarini o‘rganmoqdaman
+🌱 Hozirda AI va backend yo‘nalishlarini o‘rganmoqdaman
 
-🧠 Chiroyli dizayn va foydali botlar yaratishga qiziqaman
+🧠 Chiroyli va foydali botlar yaratishga qiziqaman
 
-💬 Python, Telegram Bot va AI haqida suhbatlashishga tayyorman
+💬 Python, Bot va AI haqida suhbatlashishga tayyorman
 """
 
-        bot.send_message(message.chat.id, text)
+    bot.send_message(message.chat.id, text)
 
-    # TECH STACK
-    elif message.text == "🛠 Tech Stack":
+# TECH STACK
+@bot.message_handler(func=lambda message: message.text == "🛠 Tech Stack")
+def tech(message):
 
-        text = """
+    text = """
 🛠 Tech Stack
 ━━━━━━━━━━━━━━━━
 
 🐍 Backend:
- • Python
- • Aiogram
- • PyTelegramBotAPI
+• Python
+• Aiogram
+• PyTelegramBotAPI
 
 🗄 Database:
- • SQLite
- • PostgreSQL
+• SQLite
+• PostgreSQL
 
 🎨 Frontend:
- • HTML
- • CSS
+• HTML
+• CSS
 
 🧰 Tools:
- • Git
- • GitHub
- • VS Code
- • Postman
+• Git
+• GitHub
+• VS Code
+• Postman
 
 🤖 Extra:
- • Telegram Bot API
- • REST API
+• Telegram Bot API
+• REST API
 """
 
-        bot.send_message(message.chat.id, text)
+    bot.send_message(message.chat.id, text)
 
-    # PROJECTS
-    elif message.text == "💼 Projects":
+# PROJECTS
+@bot.message_handler(func=lambda message: message.text == "💼 Projects")
+def projects(message):
 
-        text = """
+    text = """
 💼 Projects
 ━━━━━━━━━━━━━━━━
 
@@ -110,15 +109,16 @@ def portfolio(message):
 🧠 AI Chat Bot
 🌐 Portfolio Bot
 
-Tez orada yangi loyihalar qo‘shiladi 🚀
+🚀 Yangi loyihalar tez orada qo‘shiladi
 """
 
-        bot.send_message(message.chat.id, text)
+    bot.send_message(message.chat.id, text)
 
-    # CONTACT
-    elif message.text == "📞 Contact":
+# CONTACT
+@bot.message_handler(func=lambda message: message.text == "📞 Contact")
+def contact(message):
 
-        text = """
+    text = """
 📞 Contact
 ━━━━━━━━━━━━━━━━
 
@@ -134,8 +134,9 @@ komilovgulomjon428@gmail.com
 📩 Istalgan vaqt bog‘lanishingiz mumkin!
 """
 
-        bot.send_message(message.chat.id, text)
+    bot.send_message(message.chat.id, text)
 
+# RUN
 print("Bot ishladi ✅")
 
 bot.infinity_polling()
