@@ -1,142 +1,35 @@
 import telebot
 import os
-
 from dotenv import load_dotenv
-from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
-# ENV LOAD
-load_dotenv()
+load_dotenv() 
 
 TOKEN = os.getenv("BOT_TOKEN")
 
-# BOT
 bot = telebot.TeleBot(TOKEN)
 
-# MENU
-markup = ReplyKeyboardMarkup(resize_keyboard=True)
+# @bot.message_handler(commands=['start', 'help'])
+# def send_welcome(message):
+# 	text = "Assalomu alaykum, meni portfolio botimga xush kelibsiz!"
+# 	keyboard = types.ReplyKeyboardMarkup("")
+# 	btn1 = types.KeyboardButton("Abbout me")
+# 	btn2 = types.KeyboardButton("Contact ")
+# 	keyboard.add(btn1, btn2)
+# bot.send_message(message.chat.id, text, reply_markup=keyboard)
 
-btn1 = KeyboardButton("👨‍💻 About Me")
-btn2 = KeyboardButton("🛠 Tech Stack")
-btn3 = KeyboardButton("💼 Projects")
-btn4 = KeyboardButton("📞 Contact")
+@bot.message_handler(func=lambda message: True)
+def echo_all(message):
+ if message.text == "Abbout me":
+        bot.send_message(message.chat.id, "Menim G'ulomjon Komilovman. \n Men frontent dasturchiman." )
+ elif message.text == "Contact ":
+        bot.send_message(message.chat.id, "Biz bilan aloqada bo'lish uchun: \n Telegram: @komilov_g \n Email: komilovgulomjon428@gmail.com")
+@bot.messsage_handler(func=lambda message: message.text == "Abbout me")
+def about_me(message):
+    bot.send_message(message.chat.id, "Menim G'ulomjon Komilovman. \n Men frontent dasturchiman.")
 
-markup.row(btn1, btn2)
-markup.row(btn3, btn4)
-
-# START
-@bot.message_handler(commands=['start'])
-def start(message):
-
-    text = """
-👋 Salom! Men Komilov G'ulomjonman
-
-⚡ Python Developer | Telegram Bot Developer
-
-Quyidagi bo'limlardan birini tanlang 👇
-"""
-
-    bot.send_message(
-        message.chat.id,
-        text,
-        reply_markup=markup
-    )
-
-# ABOUT
-@bot.message_handler(func=lambda message: message.text == "👨‍💻 About Me")
-def about(message):
-
-    text = """
-👨‍💻 About Me
-━━━━━━━━━━━━━━━━
-
-💼 Telegram botlar va Python loyihalar yarataman
-
-⚡ Python, Telegram Bot API va automation bo‘yicha tajribam bor
-
-🌱 Hozirda AI va backend yo‘nalishlarini o‘rganmoqdaman
-
-🧠 Chiroyli va foydali botlar yaratishga qiziqaman
-
-💬 Python, Bot va AI haqida suhbatlashishga tayyorman
-"""
-
-    bot.send_message(message.chat.id, text)
-
-# TECH STACK
-@bot.message_handler(func=lambda message: message.text == "🛠 Tech Stack")
-def tech(message):
-
-    text = """
-🛠 Tech Stack
-━━━━━━━━━━━━━━━━
-
-🐍 Backend:
-• Python
-• Aiogram
-• PyTelegramBotAPI
-
-🗄 Database:
-• SQLite
-• PostgreSQL
-
-🎨 Frontend:
-• HTML
-• CSS
-
-🧰 Tools:
-• Git
-• GitHub
-• VS Code
-• Postman
-
-🤖 Extra:
-• Telegram Bot API
-• REST API
-"""
-
-    bot.send_message(message.chat.id, text)
-
-# PROJECTS
-@bot.message_handler(func=lambda message: message.text == "💼 Projects")
-def projects(message):
-
-    text = """
-💼 Projects
-━━━━━━━━━━━━━━━━
-
-🤖 Video Downloader Bot
-🎵 Music Downloader Bot
-🧠 AI Chat Bot
-🌐 Portfolio Bot
-
-🚀 Yangi loyihalar tez orada qo‘shiladi
-"""
-
-    bot.send_message(message.chat.id, text)
-
-# CONTACT
-@bot.message_handler(func=lambda message: message.text == "📞 Contact")
+@bot.message_handler(func=lambda message: message.text == "Contact ")
 def contact(message):
+    bot.send_message(message.chat.id, "Biz bilan aloqada bo'lish uchun: \n Telegram: @komilov_g \n Email:komilovgulomjon428@gmail.com ") 
 
-    text = """
-📞 Contact
-━━━━━━━━━━━━━━━━
-
-📱 Telegram:
-@komilovv_g
-
-📧 Gmail:
-komilovgulomjon428@gmail.com
-
-📞 Telefon:
-+998 99 329 68 26
-
-📩 Istalgan vaqt bog‘lanishingiz mumkin!
-"""
-
-    bot.send_message(message.chat.id, text)
-
-# RUN
-print("Bot ishladi ✅")
 
 bot.infinity_polling()
